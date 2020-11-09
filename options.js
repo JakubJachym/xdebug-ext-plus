@@ -3,6 +3,11 @@ function saveOptions(e) {
   browser.storage.local.set({
     idekey: document.querySelector("#idekey").value
   });
+
+  document.querySelector("#msg_settings_saved").classList.remove("u-isHidden");
+  window.setTimeout(function () {
+    document.querySelector("#msg_settings_saved").classList.add("u-isHidden");
+  }, 3000);
 }
 
 function restoreOptions() {

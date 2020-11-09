@@ -1,6 +1,5 @@
 body.options {
-    background-color: rgba(217, 222, 255, 0.7);
-    padding: 20px;
+    padding: 20px 0;
 }
 
 h1 {
@@ -14,23 +13,24 @@ h1 {
 
 .options ul li {
     list-style: none;
-    border-left: 3px solid #1726b8;
-    padding: 10px 0 10px 15px;
+    padding: 10px 0;
     margin-bottom: 15px;
     background: white;
-}
-
-.options ul li:nth-of-type(2) {
-    border-color: #1d6218;
-}
-
-.options ul li:nth-of-type(3) {
-    border-color: #892d1e;
 }
 
 .options ul li h2 {
     padding: 0;
     margin: 0;
+}
+.options ul li input {
+    width: 20em;
+    margin: 0;
+    padding: 0.25em 0.5em;
+}
+.options ul li select {
+    width: 10em;
+    margin: 0;
+    padding: 0.25em 0.5em;
 }
 
 .options ul li input[type=checkbox] {
@@ -48,4 +48,16 @@ h1 {
     font-size: 1.3em;
     width: 15%;
     text-align: center;
+}
+
+.options .u-isHidden {
+    display: none;
+}
+
+.msg {
+    margin-left: 1em;
+}
+
+.msg-ok {
+    color: #1d6218;
 }
