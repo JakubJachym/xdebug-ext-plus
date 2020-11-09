@@ -1,15 +1,11 @@
-var currentTab;
-var currentState;
+let currentTab;
+let currentState;
 
 /*
  * Enable or disable Debugging
  */
 function toggleButton(event) {
-  console.log('toggleButton');
-  console.log(typeof event);
-  console.log(event);
-
-  function onExecuted(result) {
+  function onExecuted() {
     browser.tabs.executeScript(
       currentTab.id, {
         file: "cookies.js"
@@ -20,8 +16,8 @@ function toggleButton(event) {
     console.log(`Can't execute script: ${error}, for current tab ID ` + currentTab.id);
   }
 
-  var userTriggered = typeof event === 'object';
-  var executing = browser.tabs.executeScript(
+  const userTriggered = (typeof event === 'object');
+  const executing = browser.tabs.executeScript(
     currentTab.id, {
       code: "var currentState = " + currentState + "; var userTriggered = " + userTriggered + ";"
     });
@@ -34,33 +30,30 @@ browser.browserAction.onClicked.addListener(toggleButton);
  * Switches currentTab to reflect the currently active tab
  */
 function updateActiveTab(e) {
-  console.log('Event', e);
-
   function isSupportedProtocol(urlString) {
-    var supportedProtocols = ["https:", "http:", "ftp:", "file:"];
-    var url = document.createElement('a');
+    const supportedProtocols = ["https:", "http:", "ftp:", "file:"];
+    let url = document.createElement('a');
     url.href = urlString;
-    return supportedProtocols.indexOf(url.protocol) != -1;
+
+    return (supportedProtocols.indexOf(url.protocol) !== -1);
   }
 
   function updateTab(tabs) {
     if (tabs[0]) {
       currentTab = tabs[0];
-      console.log('Current tab is ' + currentTab.id);
       if (isSupportedProtocol(currentTab.url)) {
         toggleButton();
       }
     }
   }
 
-  var gettingActiveTab = browser.tabs.query({active: true, currentWindow: true});
+  const gettingActiveTab = browser.tabs.query({active: true, currentWindow: true});
   gettingActiveTab.then(updateTab);
 
 }
 
 function updateButton(result) {
   if (typeof currentTab.id === 'undefined') {
-    console.log('No current tab yet')
     return;
   }
 
@@ -94,7 +87,6 @@ browser.windows.onFocusChanged.addListener(updateActiveTab);
 //browser.browserAction.onClicked.addListener(updateActiveTab);
 
 function notify(message) {
-  console.log(message);
   if (typeof message.state !== 'undefined') {
     updateButton(message.state);
     currentState = message.state;

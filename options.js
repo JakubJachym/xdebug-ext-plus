@@ -15,7 +15,7 @@ function restoreOptions() {
     console.log(`Error: ${error}`);
   }
 
-  var getting = browser.storage.local.get("idekey");
+  const getting = browser.storage.local.get(["idekey", "cookieSameSite", "cookieSecure"]);
   getting.then(setCurrentChoice, onError);
 }
 
