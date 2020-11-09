@@ -1,6 +1,5 @@
 body.options {
-    background-color: rgba(217, 222, 255, 0.7);
-    padding: 20px;
+    padding: 20px 0;
 }
 
 h1 {
@@ -11,29 +10,100 @@ h1 {
     margin: 0;
     padding: 0;
 }
+
 .options ul li {
     list-style: none;
-    border-left: 3px solid #1726b8;
-    padding: 10px 0 10px 15px;
+    padding: 10px 0;
     margin-bottom: 15px;
     background: white;
 }
-.options ul li:nth-of-type(2) {
-    border-color: #1d6218;
+
+.options ul li h2 {
+    padding: 0;
+    margin: 0;
 }
-.options ul li:nth-of-type(3) {
-    border-color: #892d1e;
+.options ul li input {
+    width: 20em;
+    margin: 0;
+    padding: 0.25em 0.5em;
 }
-.options ul li h2 { padding : 0; margin: 0;}
+.options ul li select {
+    width: 10em;
+    margin: 0;
+    padding: 0.25em 0.5em;
+}
+
 .options ul li input[type=checkbox] {
     -moz-transform: scale(1.5); /* FF */
     -webkit-transform: scale(1.5); /* Safari and Chrome */
     padding: 10px;
     margin-right: 10px;
 }
-.options .buttons { text-align: left; }
+
+.options .formItemContainer {
+    margin-bottom: 0.5em;
+    display: flex;
+    align-items: center;
+}
+
+.options .formItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.options .formItem input,
+.options .formItem select {
+    flex-grow: 2;
+}
+
+.options .buttons {
+    text-align: left;
+}
+
 .options form button[type=submit] {
     font-size: 1.3em;
     width: 15%;
     text-align: center;
+}
+
+.options form label {
+    display: inline-flex;
+    width: 5em;
+    margin: 0.2em 0;
+}
+
+.options .u-isHidden {
+    display: none;
+}
+
+.options .help {
+    margin-left: 0.5em;
+}
+
+.options .samesiteSecureInfo {
+    margin-left: 5.1em;
+}
+
+.msg {
+    margin-left: 1em;
+}
+
+.msg-ok {
+    color: #1d6218;
+}
+
+@media only screen and (max-width: 400px) {
+    .options .formItemContainer {
+        flex-direction: column;
+        align-items: normal;
+    }
+
+    .options .formItemContainer > * {
+        margin-right: 5px;
+    }
+
+    .options .samesiteSecureInfo {
+        margin-left: 0;
+    }
 }
