@@ -5,27 +5,27 @@ var currentState;
  * Enable or disable Debugging
  */
 function toggleButton(event) {
-    console.log('toggleButton');
-    console.log(typeof event);
-    console.log(event);
+  console.log('toggleButton');
+  console.log(typeof event);
+  console.log(event);
 
-    function onExecuted(result) {
-        browser.tabs.executeScript(
-            currentTab.id, {
-                file: "cookies.js"
-            });
-    }
+  function onExecuted(result) {
+    browser.tabs.executeScript(
+      currentTab.id, {
+        file: "cookies.js"
+      });
+  }
 
-    function onError(error) {
-        console.log(`Can't execute script: ${error}, for current tab ID ` + currentTab.id);
-    }
+  function onError(error) {
+    console.log(`Can't execute script: ${error}, for current tab ID ` + currentTab.id);
+  }
 
-    var userTriggered = typeof event === 'object';
-    var executing = browser.tabs.executeScript(
-        currentTab.id, {
-            code: "var currentState = "+ currentState +"; var userTriggered = " + userTriggered + ";"
-        });
-    executing.then(onExecuted, onError);
+  var userTriggered = typeof event === 'object';
+  var executing = browser.tabs.executeScript(
+    currentTab.id, {
+      code: "var currentState = " + currentState + "; var userTriggered = " + userTriggered + ";"
+    });
+  executing.then(onExecuted, onError);
 }
 
 browser.browserAction.onClicked.addListener(toggleButton);
@@ -34,50 +34,51 @@ browser.browserAction.onClicked.addListener(toggleButton);
  * Switches currentTab to reflect the currently active tab
  */
 function updateActiveTab(e) {
-    console.log('Event', e);
-    function isSupportedProtocol(urlString) {
-        var supportedProtocols = ["https:", "http:", "ftp:", "file:"];
-        var url = document.createElement('a');
-        url.href = urlString;
-        return supportedProtocols.indexOf(url.protocol) != -1;
-    }
+  console.log('Event', e);
 
-    function updateTab(tabs) {
-        if (tabs[0]) {
-            currentTab = tabs[0];
-            console.log('Current tab is ' + currentTab.id);
-            if (isSupportedProtocol(currentTab.url)) {
-                toggleButton();
-            }
-        }
-    }
+  function isSupportedProtocol(urlString) {
+    var supportedProtocols = ["https:", "http:", "ftp:", "file:"];
+    var url = document.createElement('a');
+    url.href = urlString;
+    return supportedProtocols.indexOf(url.protocol) != -1;
+  }
 
-    var gettingActiveTab = browser.tabs.query({active: true, currentWindow: true});
-    gettingActiveTab.then(updateTab);
+  function updateTab(tabs) {
+    if (tabs[0]) {
+      currentTab = tabs[0];
+      console.log('Current tab is ' + currentTab.id);
+      if (isSupportedProtocol(currentTab.url)) {
+        toggleButton();
+      }
+    }
+  }
+
+  var gettingActiveTab = browser.tabs.query({active: true, currentWindow: true});
+  gettingActiveTab.then(updateTab);
 
 }
 
 function updateButton(result) {
-    if (typeof currentTab.id === 'undefined') {
-        console.log('No current tab yet')
-        return;
-    }
+  if (typeof currentTab.id === 'undefined') {
+    console.log('No current tab yet')
+    return;
+  }
 
-    browser.browserAction.setIcon({
-        path: result ? {
-            32: "data/icons/debug_32_active.png",
-            48: "data/icons/debug_32_active.png"
-        } : {
-            32: "data/icons/debug_48_inactive.png",
-            48: "data/icons/debug_48_inactive.png"
-        },
-        tabId: currentTab.id
-    });
+  browser.browserAction.setIcon({
+    path: result ? {
+      32: "data/icons/debug_32_active.png",
+      48: "data/icons/debug_32_active.png"
+    } : {
+      32: "data/icons/debug_48_inactive.png",
+      48: "data/icons/debug_48_inactive.png"
+    },
+    tabId: currentTab.id
+  });
 
-    browser.browserAction.setTitle({
-        title: result ? 'Disable Debugging' : 'Enable Debugging',
-        tabId: currentTab.id
-    });
+  browser.browserAction.setTitle({
+    title: result ? 'Disable Debugging' : 'Enable Debugging',
+    tabId: currentTab.id
+  });
 }
 
 // listen to tab URL changes
@@ -93,11 +94,11 @@ browser.windows.onFocusChanged.addListener(updateActiveTab);
 //browser.browserAction.onClicked.addListener(updateActiveTab);
 
 function notify(message) {
-    console.log(message);
-    if (typeof message.state !== 'undefined') {
-        updateButton(message.state);
-        currentState = message.state;
-    }
+  console.log(message);
+  if (typeof message.state !== 'undefined') {
+    updateButton(message.state);
+    currentState = message.state;
+  }
 }
 
 // Listen to content scripts messages
