@@ -8,19 +8,44 @@
 </head>
 
 <body class="options">
-
 <form>
     <h1>Extension options</h1>
     <p class="learn-more">
-        Learn how to setup your web server and use Xdebug : <a href="https://deliciousbrains.com/xdebug-advanced-php-debugging/">Learn more</a>.
-
+        Learn how to setup your web server and use Xdebug: <a href="https://deliciousbrains.com/xdebug-advanced-php-debugging/">Learn more</a>.
     </p>
     <ul>
         <li>
             <h2>XDEBUG_SESSION Cookie</h2>
-            <p class="hint">Xdebug cookie to allow you debugging of your application at runtime. IDE key should match your server configuration.</p>
-            <label>IDE Key : <input type="text" id="idekey"></label>
+            <p>Xdebug cookie to allow you debugging of your application at runtime. IDE key should match your server configuration.</p>
+            <div class="formItemContainer">
+                <label for="idekey">IDE Key:</label>
+                <div class="formItem">
+                    <input type="text" id="idekey">
+                </div>
+            </div>
+            <div class="formItemContainer">
+                <label for="cookie_samesite">SameSite:</label>
+                <div class="formItem">
+                    <select id="cookie_samesite">
+                        <option>Strict</option>
+                        <option>Lax</option>
+                        <option>None</option>
+                    </select>
+                    <span class="help"><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#SameSite_attribute" target="_blank">?</a></span>
+                </div>
+            </div>
 
+            <div class="formItemContainer">
+                <label for="cookie_secure">Secure:</label>
+                <div class="formItem">
+                    <select id="cookie_secure">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                    <span class="help"><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Restrict_access_to_cookies" target="_blank">?</a></span>
+                </div>
+            </div>
+            <div class="samesiteSecureInfo u-isHidden" id="cookie_secure_hint">If SameSite attribute is set to None, Cookie Security must be set to Yes.</div>
         </li>
     </ul>
     <div class="buttons">

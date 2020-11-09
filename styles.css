@@ -40,6 +40,23 @@ h1 {
     margin-right: 10px;
 }
 
+.options .formItemContainer {
+    margin-bottom: 0.5em;
+    display: flex;
+    align-items: center;
+}
+
+.options .formItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.options .formItem input,
+.options .formItem select {
+    flex-grow: 2;
+}
+
 .options .buttons {
     text-align: left;
 }
@@ -50,8 +67,22 @@ h1 {
     text-align: center;
 }
 
+.options form label {
+    display: inline-flex;
+    width: 5em;
+    margin: 0.2em 0;
+}
+
 .options .u-isHidden {
     display: none;
+}
+
+.options .help {
+    margin-left: 0.5em;
+}
+
+.options .samesiteSecureInfo {
+    margin-left: 5.1em;
 }
 
 .msg {
@@ -60,4 +91,19 @@ h1 {
 
 .msg-ok {
     color: #1d6218;
+}
+
+@media only screen and (max-width: 400px) {
+    .options .formItemContainer {
+        flex-direction: column;
+        align-items: normal;
+    }
+
+    .options .formItemContainer > * {
+        margin-right: 5px;
+    }
+
+    .options .samesiteSecureInfo {
+        margin-left: 0;
+    }
 }

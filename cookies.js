@@ -8,6 +8,8 @@ if (typeof options === "undefined") {
 
   function onGot(item) {
     options.checkCookies.XDEBUG_SESSION = item.idekey || "PHPSTORM";
+    options.samesite = item.cookieSameSite || "Strict";
+    options.secure = item.cookieSecure || false;
   }
 
   options = {
@@ -16,7 +18,9 @@ if (typeof options === "undefined") {
       XDEBUG_SESSION: '',
       /*XDEBUG_TRACE: '',
       XDEBUG_PROFILE: ''*/
-    }
+    },
+    samesite: "Strict",
+    secure: false,
   };
 
   let getting = browser.storage.local.get(["idekey", "cookieSameSite", "cookieSecure"]);
@@ -24,7 +28,7 @@ if (typeof options === "undefined") {
 }
 
 
-function createCookie(name, value, days) {
+function createCookie(name, value, days, samesite = "Lax", secure = false) {
   let expires = "";
 
   if (days) {
@@ -35,7 +39,14 @@ function createCookie(name, value, days) {
 
   if (typeof document.cookie != 'undefined') {
     browser.runtime.sendMessage("Cookie " + name + " created with value " + value);
-    document.cookie = name + "=" + value + expires + "; path=/";
+
+    let cookieStr = name + "=" + value + expires + "; path=/; SameSite=" + samesite;
+
+    if (secure || samesite === "None") {
+      cookieStr += "; Secure";
+    }
+
+    document.cookie = cookieStr;
   }
 }
 
@@ -69,6 +80,7 @@ function isSet(name) {
 
 browser.runtime.sendMessage(options);
 browser.runtime.sendMessage({currentState: currentState, userTriggered: userTriggered});
+
 if (userTriggered === false) {
   // tab changed or page loaded
   let result = {};
@@ -81,11 +93,13 @@ if (userTriggered === false) {
     if (isSet(cookieName)) {
       let currentValue = readCookie(cookieName);
       let newValue = options.checkCookies[cookieName];
+      let samesite = options.samesite;
+      let secure = options.secure;
       browser.runtime.sendMessage("Cookie found with value " + currentValue);
       if (newValue !== currentValue) {
         browser.runtime.sendMessage("Cookie values mismatch, resetting (" + currentValue + " -> " + newValue + ")");
         eraseCookie(cookieName);
-        createCookie(cookieName, newValue, 1);
+        createCookie(cookieName, newValue, 1, samesite, secure);
       }
     }
 
@@ -95,13 +109,15 @@ if (userTriggered === false) {
   // widget button pressed
   let cookieName = options.cookieName;
   let cookieValue = options.checkCookies[cookieName];
+  let samesite = options.samesite;
+  let secure = options.secure;
   browser.runtime.sendMessage({"debug": 'Button pressed'});
 
   if (!isSet(cookieName)) {
     browser.runtime.sendMessage({"debug": 'Needs to be set'});
     // sometimes URL is null e.g. when we're on about:addons under linux (is it true?)
     if (typeof document.URL === 'string' && document.URL.substring(0, 4) === 'http') {
-      createCookie(cookieName, cookieValue, 1);
+      createCookie(cookieName, cookieValue, 1, samesite, secure);
 
       // Cookies can be disabled
       let state = isSet(cookieName);
@@ -119,4 +135,3 @@ if (userTriggered === false) {
     browser.runtime.sendMessage({"state": false});
   }
 }
-
